@@ -5,7 +5,6 @@
  *                                                                                           *
  ******************************************************************************************* */
 
-
 /**
  * Returns the result of concatenation of two strings.
  *
@@ -21,7 +20,6 @@
 function concatenateStrings(value1, value2) {
   return value1 + value2;
 }
-
 
 /**
  * Returns the length of given string.
@@ -71,7 +69,6 @@ function extractNameFromTemplate(value) {
 
   return arrayOfWords[1];
 }
-
 
 /**
  * Returns a first char of the given string.
@@ -175,7 +172,6 @@ function unbracketTag(str) {
   return result;
 }
 
-
 /**
  * Converts all characters of the specified string into the upper case
  *
@@ -232,10 +228,50 @@ function extractEmails(str) {
  *             '└──────────┘\n'
  *
  */
-function getRectangleString(/* width, height */) {
-  throw new Error('Not implemented');
-}
+function getRectangleString(width, height) {
+  let result = '';
 
+  for (let i = 1; i <= height; i += 1) {
+    for (let j = 1; j <= width; j += 1) {
+      if (i === 1) {
+        if (j === 1) {
+          result += '┌';
+        }
+        if (j > 1 && j < width) {
+          result += '─';
+        }
+        if (j === width) {
+          result += '┐\n';
+        }
+      }
+
+      if (i > 1 && i < height) {
+        if (j === 1) {
+          result += '│';
+        }
+        if (j > 1 && j < width) {
+          result += ' ';
+        }
+        if (j === width) {
+          result += '│\n';
+        }
+      }
+
+      if (i === height) {
+        if (j === 1) {
+          result += '└';
+        }
+        if (j > 1 && j < width) {
+          result += '─';
+        }
+        if (j === width) {
+          result += '┘\n';
+        }
+      }
+    }
+  }
+  return result;
+}
 
 /**
  * Encode specified string with ROT13 cipher
@@ -253,8 +289,29 @@ function getRectangleString(/* width, height */) {
  *    => 'NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm'
  *
  */
-function encodeToRot13(/* str */) {
-  throw new Error('Not implemented');
+function encodeToRot13(str) {
+  const inputStr = ' ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz';
+  const outputStr = ' NOPQRSTUVWXYZABCDEFGHIJKLMnopqrstuvwxyzabcdefghijklm';
+  let resultStr = '';
+
+  for (let i = 0; i < str.length; i += 1) {
+    let count = 0;
+
+    for (let j = 0; j < inputStr.length; j += 1) {
+      if (str[i] === inputStr[j]) {
+        resultStr += outputStr[j];
+        count = 0;
+      } else if (str[i] !== inputStr[j]) {
+        count += 1;
+      }
+
+      if (count === 53) {
+        resultStr += str[i];
+      }
+    }
+  }
+
+  return resultStr;
 }
 
 /**
@@ -270,10 +327,18 @@ function encodeToRot13(/* str */) {
  *   isString('test') => true
  *   isString(new String('test')) => true
  */
-function isString(/* value */) {
-  throw new Error('Not implemented');
+function isString(value) {
+  if (value === undefined || value === null) {
+    return false;
+  }
+  if (typeof value === 'string') {
+    return true;
+  }
+  if (Object.getPrototypeOf(value).constructor.name === 'String') {
+    return true;
+  }
+  return false;
 }
-
 
 /**
  * Returns playid card id.
@@ -299,10 +364,71 @@ function isString(/* value */) {
  *   'Q♠' => 50
  *   'K♠' => 51
  */
-function getCardId(/* value */) {
-  throw new Error('Not implemented');
-}
+function getCardId(value) {
+  const arrayOfCards = [
+    'A♣',
+    '2♣',
+    '3♣',
+    '4♣',
+    '5♣',
+    '6♣',
+    '7♣',
+    '8♣',
+    '9♣',
+    '10♣',
+    'J♣',
+    'Q♣',
+    'K♣',
+    'A♦',
+    '2♦',
+    '3♦',
+    '4♦',
+    '5♦',
+    '6♦',
+    '7♦',
+    '8♦',
+    '9♦',
+    '10♦',
+    'J♦',
+    'Q♦',
+    'K♦',
+    'A♥',
+    '2♥',
+    '3♥',
+    '4♥',
+    '5♥',
+    '6♥',
+    '7♥',
+    '8♥',
+    '9♥',
+    '10♥',
+    'J♥',
+    'Q♥',
+    'K♥',
+    'A♠',
+    '2♠',
+    '3♠',
+    '4♠',
+    '5♠',
+    '6♠',
+    '7♠',
+    '8♠',
+    '9♠',
+    '10♠',
+    'J♠',
+    'Q♠',
+    'K♠',
+  ];
+  let result;
 
+  arrayOfCards.forEach((card, index) => {
+    if (value === card) {
+      result = index;
+    }
+  });
+
+  return result;
+}
 
 module.exports = {
   concatenateStrings,
